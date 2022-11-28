@@ -18,10 +18,10 @@ library(sqldf)
 # gt = read_csv("games_by_teams.csv") #Games at the Team level
 # gp = read_csv("games_by_players.csv") #Games at the player level
 
-mp = read_csv("matches_by_players.csv") #Matches at the player level
+mp = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_players.csv") #Matches at the player level
 #mp$scored_core_goal = ifelse(mp$core_goals > 0, 1, 0)
 
-mt = read_csv("matches_by_teams.csv") #Matches at the team level
+mt = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_teams.csv") #Matches at the team level
 
 ```
 
