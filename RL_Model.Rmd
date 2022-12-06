@@ -1,0 +1,16 @@
+---
+title: "RL Modeling"
+author: "David Young"
+date: "2022-11-28"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(lifecycle)
+library(tidymodels)
+```
+

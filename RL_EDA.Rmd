@@ -14,14 +14,15 @@ library(ggplot2)
 library(dplyr)
 library(readr)
 library(sqldf)
+library(psych)
 
 # gt = read_csv("games_by_teams.csv") #Games at the Team level
 # gp = read_csv("games_by_players.csv") #Games at the player level
 
-mp = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_players.csv") #Matches at the player level
+mp = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_players.csv?raw=true") #Matches at the player level
 #mp$scored_core_goal = ifelse(mp$core_goals > 0, 1, 0)
 
-mt = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_teams.csv") #Matches at the team level
+mt = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_teams.csv?raw=true") #Matches at the team level
 
 ```
 
@@ -54,6 +55,7 @@ joined_data$player_tag = as.factor(joined_data$player_tag)
 
 ```{r}
 joined_data
+write.csv(joined_data, "joined_data.csv")
 ```
 
 
@@ -124,6 +126,13 @@ order by count(player_tag) desc") %>%
 #joined_data %>% pairs()
 ```
 
+
+###Correlation Plot
+```{r}
+corPlot(joined_data[,4:11], cex = .9, xlas = 2)
+```
+
+
 ###Relationship between goals and saves
 
 ```{r}
@@ -138,6 +147,19 @@ joined_data %>% ggplot() +
        caption = "Each point is a player in a singular game")+
   theme_minimal()
 ```
+
+```{r}
+
+ggplot(joined_data)+
+  geom_point(aes(y = advanced_rating, x = core_goals))
+
+ggplot(joined_data)+
+  geom_point(aes(y = advanced_rating, x = core_assists), col = "blue")
+```
+
+
+
+
 
 ```{r}
 joined_data %>% 
@@ -160,6 +182,9 @@ joined_data %>%
 joined_data %>% ggplot()+
   geom_boxplot(aes(x = color, y = advanced_rating, fill = color))
 ```
+
+
+
 # Checking to see if there is a difference in stats when stratifiying by team colors.
 ```{r}
 o_adv = sqldf("select mp.advanced_rating,
@@ -215,3 +240,5 @@ t.test(x = b_adv$core_goals, y = o_adv$core_goals)
 
 
 So there is a significant difference between advanced player rating when comparing team color. In other words, it's expected that that the players on the blue team will have a higher advanced rating than players on the orange team. The same can be said for score and goals.
+
+
