@@ -12,5 +12,22 @@ library(ggplot2)
 library(readr)
 library(lifecycle)
 library(tidymodels)
+library(multilevelmod)
+```
+
+```{r}
+data = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/main/joined_data.csv?raw=true")
+head(data)
+
+```
+```{r}
+paste("Unique team =",length(unique(data$team_name)))
+paste("Unique players =", length(unique(data$player_tag)))
+```
+
+
+```{r}
+#Dropping team name 
+data[,-c(1,2)]
 ```
 

@@ -33,30 +33,27 @@ colnames(mp)
 ```
 
 ```{r, creating dataset}
-joined_data = sqldf("select mt.team_name,
-mt.color, 
-mp.player_tag,
-mp.core_goals,
-mp.core_assists, 
-mp.core_saves, 
-mp.core_shots,
-mp.core_score,
-mp.demo_inflicted,
-mp.demo_taken,
-mp.advanced_rating
-from mt
-      left join mp on mp.team_id = mt.team_id
-      and mp.match_id = mt.match_id
-      where mp.demo_taken is not null")
-joined_data$team_name = as.factor(joined_data$team_name)
-joined_data$color = as.factor(joined_data$color)
-joined_data$player_tag = as.factor(joined_data$player_tag)
+joined_data = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/main/joined_data.csv?raw=true")[,2:12]
+# joined_data = sqldf("select mt.team_name,
+# mt.color, 
+# mp.player_tag,
+# mp.core_goals,
+# mp.core_assists, 
+# mp.core_saves, 
+# mp.core_shots,
+# mp.core_score,
+# mp.demo_inflicted,
+# mp.demo_taken,
+# mp.advanced_rating
+# from mt
+#       left join mp on mp.team_id = mt.team_id
+#       and mp.match_id = mt.match_id
+#       where mp.demo_taken is not null")
+# joined_data$team_name = as.factor(joined_data$team_name)
+# joined_data$color = as.factor(joined_data$color)
+# joined_data$player_tag = as.factor(joined_data$player_tag)
 ```
 
-```{r}
-joined_data
-write.csv(joined_data, "joined_data.csv")
-```
 
 
 # Checking for missing data
@@ -88,7 +85,7 @@ After going through and looking at handful of the variables, I have determined t
 
 ```{r}
 
-temp = sqldf("select player_tag, count(player_tag) as player_count from joined_data
+sqldf("select player_tag, count(player_tag) as player_count from joined_data
       where (1=1)
       group by player_tag 
       order by player_count DESC
