@@ -5,6 +5,7 @@ date: "2022-11-28"
 output: pdf_document
 ---
 
+
 ```{r setup, include=FALSE}
 rm(list = ls())
 knitr::opts_chunk$set(echo = TRUE)
@@ -16,10 +17,17 @@ library(multilevelmod)
 ```
 
 ```{r}
-data = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/main/joined_data.csv?raw=true")
+data = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/main/joined_data.csv?raw=true")[,2:12]
+
+#use below when offline
+#data = read_csv("joined_data.csv")
+data = data[,2:dim(data)[2]]
+data$color = ifelse(data$color == "blue", 1 , 0) # blue = 1, orange = 0
 head(data)
 
 ```
+
+
 ```{r}
 paste("Unique team =",length(unique(data$team_name)))
 paste("Unique players =", length(unique(data$player_tag)))
@@ -27,7 +35,45 @@ paste("Unique players =", length(unique(data$player_tag)))
 
 
 ```{r}
-#Dropping team name 
-data[,-c(1,2)]
+#Dropping team name and player
+no_team = data[,-c(1,2,3)]
+head(no_team)
+
 ```
+
+# Splitting into testing and training
+
+```{r}
+set.seed(66)
+data_split <- initial_split(no_team, strata = "advanced_rating", prop = 0.8)
+
+rl_train <- training(data_split)
+rl_test  <- testing(data_split)
+```
+
+
+
+# Setting up Model
+
+
+```{r}
+lm_mod = linear_reg(mode = "regression", engine = "lm", penalty = 1 , mixture = 1) 
+lm_fit <- 
+  lm_mod %>% 
+  fit(advanced_rating ~ ., data = rl_train)
+lm_fit
+```
+
+
+```{r, feature importance}
+tidy(lm_fit)
+```
+
+
+
+```{r}
+#tidy(lm_fit) %>% 
+#  ggplot(x = )
+```
+
 

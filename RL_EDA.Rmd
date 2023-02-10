@@ -15,6 +15,8 @@ library(dplyr)
 library(readr)
 library(sqldf)
 library(psych)
+library(tidymodels)
+library(applicable)
 
 # gt = read_csv("games_by_teams.csv") #Games at the Team level
 # gp = read_csv("games_by_players.csv") #Games at the player level
@@ -30,6 +32,7 @@ mt = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b82
 
 ```{r column names, include = FALSE}
 colnames(mp)
+length(colnames(mp))
 ```
 
 ```{r, creating dataset}
@@ -237,5 +240,47 @@ t.test(x = b_adv$core_goals, y = o_adv$core_goals)
 
 
 So there is a significant difference between advanced player rating when comparing team color. In other words, it's expected that that the players on the blue team will have a higher advanced rating than players on the orange team. The same can be said for score and goals.
+
+
+*Working with all rows of data set*
+
+```{r, large data load}
+all_data = read.csv("https://github.com/Derek-Kirk/Rocket_League/raw/main/matches_by_players.csv")
+head(all_data)
+```
+
+```{r}
+all_data = na.omit(all_data)
+
+actual_data = all_data[7:dim(all_data)[2]-1]
+```
+
+```{r, fig.width = 20, fig.height=12}
+# Only works on 24in monitor or larger
+#corPlot(actual_data, xlas = 2)
+```
+
+
+```{r, pca}
+predictors = actual_data[,-1]
+mod = apd_pca(predictors)
+mod
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
