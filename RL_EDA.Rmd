@@ -17,6 +17,7 @@ library(sqldf)
 library(psych)
 library(tidymodels)
 library(applicable)
+library(moments)
 
 # gt = read_csv("games_by_teams.csv") #Games at the Team level
 # gp = read_csv("games_by_players.csv") #Games at the player level
@@ -267,6 +268,13 @@ mod = apd_pca(predictors)
 mod
 ```
 
+
+```{r, skewness}
+data = mp[,8:dim(mp)[2]-2]
+paste("core score", moment(data$core_score))
+paste("boost stolen", moment(data$boost_amount_stolen))
+
+```
 
 
 
