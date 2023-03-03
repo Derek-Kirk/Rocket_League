@@ -9,13 +9,13 @@ output: pdf_document
 rm(list = ls())
 knitr::opts_chunk$set(echo = TRUE)
 # dataset https://www.kaggle.com/datasets/dylanmonfret/rlcs-202122?resource=download&select=matches_by_teams.csv
-setwd("C:/DataViz/RL")
+#setwd("C:/DataViz/RL")
 library(ggplot2)
 library(dplyr)
 library(readr)
 library(sqldf)
 library(psych)
-library(tidymodels)
+#library(tidymodels)
 library(applicable)
 library(moments)
 
@@ -65,22 +65,22 @@ joined_data = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/main/jo
 Below is a list of variables where players are missing data from the limited data set. After going through and looking at handful of the variables, I have determined that if one of the variables is null, all variables for the case are null for this for these "non-standard statistics"
 
 ```{r, include=FALSE}
-vars_with_NA = c()
-for(x in colnames(joined_data)){
-  #print(x)
-  tble = sqldf(paste("select player_tag, count(player_tag) as player_count from
-  joined_data where ", x ," is NULL
-      group by player_tag
-      order by player_count DESC
-      limit 100", sep = ""))
-  if(dim(tble)[1] != 0){
-    vars_with_NA = append(vars_with_NA, x)
-  }
-}
+# vars_with_NA = c()
+# for(x in colnames(joined_data)){
+#   #print(x)
+#   tble = sqldf(paste("select player_tag, count(player_tag) as player_count from
+#   joined_data where ", x ," is NULL
+#       group by player_tag
+#       order by player_count DESC
+#       limit 100", sep = ""))
+#   if(dim(tble)[1] != 0){
+#     vars_with_NA = append(vars_with_NA, x)
+#   }
+# }
 ```
 
-```{r, variables with nulls}
-vars_with_NA
+```{r, variables with nulls, include = FALSE}
+# vars_with_NA
 ```
 
 ## Checking missing data
@@ -270,10 +270,22 @@ mod
 
 
 ```{r, skewness}
-data = mp[,8:dim(mp)[2]-2]
-paste("core score", moment(data$core_score))
-paste("boost stolen", moment(data$boost_amount_stolen))
+skew_list = c()
 
+for (field in colnames(joined_data[-c(1,2,3)]) ){
+  print(field)
+  vec = joined_data[[field]]
+  skw = skewness(vec)
+  print(skw)
+  
+  if((skw < -0.5) | (skw > 0.5)){
+    paste(field, "this is skewed and requires transformation.")
+    skew_list = append(skew_list, field)
+  }
+  
+}
+
+skew_list
 ```
 
 
