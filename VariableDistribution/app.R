@@ -10,6 +10,7 @@
 library(shiny)
 library(plotly)
 library(ggplot2)
+library(readr)
 mp = read_csv("https://github.com/Derek-Kirk/Rocket_League/blob/cd8b6dbbf3577b8280e1d32b914d24f25a799784/matches_by_players.csv?raw=true")
 data = mp[,8:dim(mp)[2]-2] # Dropping ids, players, winner indicator, and team score.
 cols = colnames(data)
@@ -29,8 +30,7 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-           plotlyOutput("varHist"),
-           plotlyOutput("varDens")
+           plotlyOutput("varHist")
         )
     )
 )
@@ -38,17 +38,13 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
+    
     output$varHist = renderPlotly({
       ggplot()+
-        geom_density(aes(x = data[[input$var]]),
-                       fill = "purple")+
-        labs(x = input$var, y = "c o u n t")
-    })
-    
-    output$varDens = renderPlotly({
-      ggplot()+
-        geom_histogram(aes(x = data[[input$var]]),
+        geom_histogram(aes(x = data[[input$var]], y = after_stat(density)),
                      fill = "purple")+
+        geom_density(aes(x = data[[input$var]]),
+                     alpha = 0.6)+
         labs(x = input$var, y = "c o u n t")
     })
 }

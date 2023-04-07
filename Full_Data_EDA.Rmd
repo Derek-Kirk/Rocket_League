@@ -1,0 +1,25 @@
+---
+title: "Full Data EDA"
+author: "David Young"
+date: "2023-03-17"
+output: pdf_document
+---
+This document is going to use the full dataset.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+# dataset https://www.kaggle.com/datasets/dylanmonfret/rlcs-202122?resource=download&select=matches_by_teams.csv
+#setwd("C:/DataViz/RL")
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(sqldf)
+library(psych)
+#library(tidymodels)
+library(applicable)
+library(moments)
+
+
+```
