@@ -31,6 +31,7 @@ class BST:
 
         return "node has been added"
 
+    # Adding all of a players games to BST
     def player_fill(self, player):
         import RL_Node
 
@@ -43,9 +44,10 @@ class BST:
         for i in range(len(player_df)):
             obj = RL_Node.Node(player_df.iloc[i])
             self.add_node(obj)
-
+        print(f"all of {player}'s have been added from the 2022-2023 season ")
         return True
 
+    # Using game score to search for specific games
     def search(self, lower, upper, node=None):
         matches = []
         print("This range is inclusive")
