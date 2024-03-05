@@ -5,9 +5,12 @@ class BST:
 
         self.data = pd.read_csv("joined_data.csv")
         self.root = None
+        self.player = input('What player PRO RL would you like to grab data for?')
+        
 
     def __str__(self):
         return f"This is the root {str(self.root)}"
+
 
     def add_node(self, node, next_node=None):
         if self.root is None:
@@ -31,11 +34,12 @@ class BST:
 
         return "node has been added"
 
-    # Adding all of a players games to BST
-    def player_fill(self, player):
+    # Adds a single player games to BST
+    def player_fill(self):
         import RL_Node
+        player = self.player
 
-        # fill with code to autofill tree with player
+        
         if player not in list(self.data.player_tag):
             print("Try a pro player that does exist")
             return False
@@ -48,9 +52,22 @@ class BST:
         return True
 
     # Using game score to search for specific games
-    def search(self, lower, upper, node=None):
+    def search(self, node=None):
+        upper_limit = self.data.advanced_rating.max()
+        lower_limit = self.data.advanced_rating.min()
+
+        print(f'The range for game scores is {lower_limit} - {upper_limit}.
+               PLEASE select a value within the upper and lower when prompted.')
+        
+        upper = int(input("Provide an upper limit. "))
+        lower = int(input('Provide a lower limit. '))
+
+        if upper > upper_limit or lower < lower_limit
+
         matches = []
+
         print("This range is inclusive")
+
         if self.root is None:
             return "There's no root"
 
